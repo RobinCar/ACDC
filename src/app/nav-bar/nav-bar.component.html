@@ -1,0 +1,35 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">Image Médicale</a>
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="#" (click)='setSelectionOk()'>Importer</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Exporter</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenu3" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Editer
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenu3">
+          <a class="dropdown-item" href="#" (click)='setSelection()'>Selectionner une zone</a>
+          <a class="dropdown-item" href="#">Edition automatique</a>
+        </div>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="#" (click)='restore()'>Restaurer</a>
+      </li>
+    </ul>
+  </div>
+</nav> 
+
+<div *ngIf="selection">
+  <a *ngFor="let s of paths">
+    <div>
+      <a href="#" (click)='setPath(s)'>{{s}}</a>
+    </div>
+  </a>
+</div>
+
+<app-canvas></app-canvas>
