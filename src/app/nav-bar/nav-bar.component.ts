@@ -25,6 +25,7 @@ export class NavBarComponent implements OnInit {
     ];
   }
 
+
   ngOnInit() {
     console.log(this.http.get('http://127.0.0.1:8000/'));
   }
