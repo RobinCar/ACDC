@@ -8,6 +8,7 @@ import { Injectable } from '@angular/core';
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.css']
 })
+
 @Injectable()
 export class NavBarComponent implements OnInit {
 
@@ -25,6 +26,7 @@ export class NavBarComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.http.get('http://127.0.0.1:8000/'));
   }
 
   setSelection() {
@@ -44,7 +46,6 @@ export class NavBarComponent implements OnInit {
 
     this.setPath('http://127.0.0.1:8000/identicon.png');
 
-    // console.log(this.canvas);
     // this.canvas.clear();
     // this.selection = true;
   }

@@ -36,7 +36,9 @@ export class CanvasComponent implements AfterViewInit {
     this.image = new Image();
     this.contexte = this.myCanvas.getContext('2d');
 
-    this.image.style.display = 'none';
+    // this.image.style.display = 'none';
+
+    // this.image.crossOrigin = 'Anonymous';
   }
 
   initCanvas() {
@@ -45,11 +47,11 @@ export class CanvasComponent implements AfterViewInit {
 
     const self = this;
 
-    // this.image.crossOrigin = 'Anonymous';
-
     this.image.onload = function() {
       self.draw();
     };
+
+    this.image.crossOrigin = 'anonymous';
   }
 
   draw() {
@@ -62,8 +64,6 @@ export class CanvasComponent implements AfterViewInit {
   }
 
   editImage(x, y, width, height) {
-
-    this.image.crossOrigin = 'Anonymous';
 
     const imageData = this.contexte.getImageData(10 + x, 10 + y, width, height);
 
