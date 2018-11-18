@@ -37,8 +37,6 @@ export class CanvasComponent implements AfterViewInit {
     this.contexte = this.myCanvas.getContext('2d');
 
     // this.image.style.display = 'none';
-
-    // this.image.crossOrigin = 'Anonymous';
   }
 
   initCanvas() {
@@ -69,13 +67,17 @@ export class CanvasComponent implements AfterViewInit {
 
     const data = imageData.data;
 
+    this.setPixelsInBlack(data);
+
+    this.contexte.putImageData(imageData, 10 + x, 10 + y);
+  }
+
+  setPixelsInBlack(data) {
     for (let i = 0; i < data.length; i += 4) {
       data[i] = 0;
       data[i + 1] = 0;
       data[i + 2] = 0;
     }
-
-    this.contexte.putImageData(imageData, 10 + x, 10 + y);
   }
 
   mousedown(e) {
@@ -91,22 +93,26 @@ export class CanvasComponent implements AfterViewInit {
       this.mouse.x = (e.pageX - this.myCanvas.offsetLeft - 10);
       this.mouse.y = (e.pageY - this.myCanvas.offsetTop - 10);
 
-      if (this.mouse.x < this.mouse.startX) {
-        if (this.mouse.y < this.mouse.startY) {
-          this.editImage(this.mouse.x, this.mouse.y, this.mouse.startX - this.mouse.x, this.mouse.startY - this.mouse.y);
-        } else {
-          this.editImage(this.mouse.x, this.mouse.startY, this.mouse.startX - this.mouse.x, this.mouse.y - this.mouse.startY);
-        }
-      } else {
-        if (this.mouse.y < this.mouse.startY) {
-          this.editImage(this.mouse.startX, this.mouse.y, this.mouse.x - this.mouse.startX, this.mouse.startY - this.mouse.y);
-        } else {
-          this.editImage(this.mouse.startX, this.mouse.startY, this.mouse.x - this.mouse.startX, this.mouse.y - this.mouse.startY);
-        }
-      }
+      this.editImageDependingCoordinates();
 
       this.started = false;
       this.selectionOk = false;
+    }
+  }
+
+  editImageDependingCoordinates() {
+    if (this.mouse.x < this.mouse.startX) {
+      if (this.mouse.y < this.mouse.startY) {
+        this.editImage(this.mouse.x, this.mouse.y, this.mouse.startX - this.mouse.x, this.mouse.startY - this.mouse.y);
+      } else {
+        this.editImage(this.mouse.x, this.mouse.startY, this.mouse.startX - this.mouse.x, this.mouse.y - this.mouse.startY);
+      }
+    } else {
+      if (this.mouse.y < this.mouse.startY) {
+        this.editImage(this.mouse.startX, this.mouse.y, this.mouse.x - this.mouse.startX, this.mouse.startY - this.mouse.y);
+      } else {
+        this.editImage(this.mouse.startX, this.mouse.startY, this.mouse.x - this.mouse.startX, this.mouse.y - this.mouse.startY);
+      }
     }
   }
 
@@ -141,6 +147,7 @@ export class CanvasComponent implements AfterViewInit {
   }
 
   setPath(s: string) {
+    this.clear();
     this.path = s;
     this.initCanvas();
   }

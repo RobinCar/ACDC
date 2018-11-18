@@ -20,8 +20,8 @@ export class NavBarComponent implements OnInit {
 
     this.selection = false;
     this.paths = [
-      'identicon.png',
-      'shaka.png'
+      '/assets/identicon.png',
+      '/assets/shaka.png'
     ];
   }
 
