@@ -1,5 +1,6 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { ElementRef, ViewChild} from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-canvas',
@@ -15,6 +16,7 @@ export class CanvasComponent implements AfterViewInit {
   private myCanvas: HTMLCanvasElement;
   private image: HTMLImageElement;
   private path: string;
+  private tempPath: string;
   private started: boolean;
   private selectionOk: boolean;
   private mouse = {
@@ -26,7 +28,7 @@ export class CanvasComponent implements AfterViewInit {
     currentY: 0
   };
 
-  constructor() {
+  constructor(private http: HttpClient) {
     this.started = false;
   }
 
@@ -52,24 +54,39 @@ export class CanvasComponent implements AfterViewInit {
     this.image.crossOrigin = 'anonymous';
   }
 
+  canvasTemp() {
+
+    this.image.src = this.tempPath;
+
+    const self = this;
+
+    this.image.onload = function() {
+      self.draw();
+    };
+
+    this.image.crossOrigin = 'anonymous';
+  }
+
   draw() {
 
     this.myCanvas.width = this.image.width;
     this.myCanvas.height = this.image.height;
 
-    this.contexte.drawImage(this.image, 10, 10);
+    this.contexte.drawImage(this.image, 0, 0);
 
   }
 
   editImage(x, y, width, height) {
 
-    const imageData = this.contexte.getImageData(10 + x, 10 + y, width, height);
+    const imageData = this.contexte.getImageData(x, y, width, height);
 
     const data = imageData.data;
 
     this.setPixelsInBlack(data);
 
-    this.contexte.putImageData(imageData, 10 + x, 10 + y);
+    this.contexte.putImageData(imageData, x, y);
+
+    this.tempPath = this.myCanvas.toDataURL('image/jpg');
   }
 
   setPixelsInBlack(data) {
@@ -83,20 +100,18 @@ export class CanvasComponent implements AfterViewInit {
   mousedown(e) {
     if (this.selectionOk) {
       this.started = true;
-      this.mouse.startX = (e.pageX - this.myCanvas.offsetLeft - 10);
-      this.mouse.startY = (e.pageY - this.myCanvas.offsetTop - 10);
+      this.mouse.startX = (e.pageX - this.myCanvas.offsetLeft);
+      this.mouse.startY = (e.pageY - this.myCanvas.offsetTop);
     }
   }
 
   mouseup(e) {
     if (this.started && this.selectionOk) {
-      this.mouse.x = (e.pageX - this.myCanvas.offsetLeft - 10);
-      this.mouse.y = (e.pageY - this.myCanvas.offsetTop - 10);
-
-      this.editImageDependingCoordinates();
-
       this.started = false;
       this.selectionOk = false;
+      this.mouse.x = (e.pageX - this.myCanvas.offsetLeft);
+      this.mouse.y = (e.pageY - this.myCanvas.offsetTop);
+      this.editImageDependingCoordinates();
     }
   }
 
@@ -118,6 +133,7 @@ export class CanvasComponent implements AfterViewInit {
 
   mousemove(e) {
     if (this.started && this.selectionOk) {
+      this.canvasTemp();
       this.mouse.currentX = (e.pageX - this.myCanvas.offsetLeft);
       this.mouse.currentY = (e.pageY - this.myCanvas.offsetTop);
       this.drawLine();
@@ -128,14 +144,14 @@ export class CanvasComponent implements AfterViewInit {
     if (this.started && this.selectionOk) {
         this.contexte.setTransform(1, 0, 0, 1, 0, 0);
         this.contexte.beginPath();
-        this.contexte.moveTo(this.mouse.startX + 10, this.mouse.startY + 10);
-        this.contexte.lineTo(this.mouse.startX + 10, this.mouse.currentY);
-        this.contexte.moveTo(this.mouse.startX + 10, this.mouse.startY + 10);
-        this.contexte.lineTo(this.mouse.currentX, this.mouse.startY + 10);
+        this.contexte.moveTo(this.mouse.startX, this.mouse.startY);
+        this.contexte.lineTo(this.mouse.startX, this.mouse.currentY);
+        this.contexte.moveTo(this.mouse.startX, this.mouse.startY);
+        this.contexte.lineTo(this.mouse.currentX, this.mouse.startY);
         this.contexte.moveTo(this.mouse.currentX, this.mouse.currentY);
-        this.contexte.lineTo(this.mouse.startX + 10, this.mouse.currentY);
+        this.contexte.lineTo(this.mouse.startX, this.mouse.currentY);
         this.contexte.moveTo(this.mouse.currentX, this.mouse.currentY);
-        this.contexte.lineTo(this.mouse.currentX, this.mouse.startY + 10);
+        this.contexte.lineTo(this.mouse.currentX, this.mouse.startY);
         this.contexte.strokeStyle = 'gray';
         this.contexte.lineWidth = 1;
         this.contexte.stroke();
@@ -149,10 +165,21 @@ export class CanvasComponent implements AfterViewInit {
   setPath(s: string) {
     this.clear();
     this.path = s;
+    this.tempPath = s;
     this.initCanvas();
   }
 
   clear() {
     this.contexte.clearRect(0, 0, this.myCanvas.width, this.myCanvas.height);
+    this.tempPath = this.path;
+  }
+
+  save() {
+    const img = this.myCanvas.toDataURL('image/jpg');
+    // tslint:disable-next-line:max-line-length
+    const iframe = '<iframe src="' + img + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>';
+    const x = window.open();
+    x.document.write(iframe);
+    x.document.close();
   }
 }

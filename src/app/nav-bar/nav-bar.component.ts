@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CanvasComponent } from '../canvas/canvas.component';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -13,6 +13,7 @@ import { Injectable } from '@angular/core';
 export class NavBarComponent implements OnInit {
 
   @ViewChild(CanvasComponent) canvas: CanvasComponent;
+  @ViewChild('export') export: ElementRef;
   private selection: boolean;
   private paths: string[];
 
@@ -49,6 +50,10 @@ export class NavBarComponent implements OnInit {
 
     // this.canvas.clear();
     // this.selection = true;
+  }
+
+  save() {
+    this.canvas.save();
   }
 
 }
