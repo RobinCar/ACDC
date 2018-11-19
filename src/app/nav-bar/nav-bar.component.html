@@ -25,11 +25,10 @@
 </nav> 
 
 <div *ngIf="selection">
-  <a *ngFor="let s of paths">
-    <div>
-      <a href="#" (click)='setPath(s)'>{{s}}</a>
-    </div>
-  </a>
+  <form>
+    Lien vers l'image : <input type="text" #input>
+    <input type="submit" value="Valider" (click)='setPath(input.value)'>
+  </form>
 </div>
 
 <app-canvas></app-canvas>

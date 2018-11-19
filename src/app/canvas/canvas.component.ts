@@ -45,6 +45,8 @@ export class CanvasComponent implements AfterViewInit {
 
     this.image.src = this.path;
 
+    this.tempPath = this.path;
+
     const self = this;
 
     this.image.onload = function() {
@@ -85,8 +87,6 @@ export class CanvasComponent implements AfterViewInit {
     this.setPixelsInBlack(data);
 
     this.contexte.putImageData(imageData, x, y);
-
-    this.tempPath = this.myCanvas.toDataURL('image/jpg');
   }
 
   setPixelsInBlack(data) {
@@ -129,6 +129,7 @@ export class CanvasComponent implements AfterViewInit {
         this.editImage(this.mouse.startX, this.mouse.startY, this.mouse.x - this.mouse.startX, this.mouse.y - this.mouse.startY);
       }
     }
+    this.tempPath = this.myCanvas.toDataURL('image/jpg');
   }
 
   mousemove(e) {
@@ -171,14 +172,14 @@ export class CanvasComponent implements AfterViewInit {
 
   clear() {
     this.contexte.clearRect(0, 0, this.myCanvas.width, this.myCanvas.height);
-    this.tempPath = this.path;
   }
 
   save() {
     const img = this.myCanvas.toDataURL('image/jpg');
     // tslint:disable-next-line:max-line-length
     const iframe = '<iframe src="' + img + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>';
-    const x = window.open();
+    const x = window;
+    x.document.open();
     x.document.write(iframe);
     x.document.close();
   }

@@ -15,15 +15,9 @@ export class NavBarComponent implements OnInit {
   @ViewChild(CanvasComponent) canvas: CanvasComponent;
   @ViewChild('export') export: ElementRef;
   private selection: boolean;
-  private paths: string[];
 
   constructor(private http: HttpClient) {
-
     this.selection = false;
-    this.paths = [
-      '/assets/identicon.png',
-      '/assets/shaka.png'
-    ];
   }
 
 
@@ -46,10 +40,10 @@ export class NavBarComponent implements OnInit {
 
   setSelectionOk() {
 
-    this.setPath('http://127.0.0.1:8000/identicon.png');
+    // this.setPath('http://127.0.0.1:8000/identicon.png');
 
-    // this.canvas.clear();
-    // this.selection = true;
+    this.canvas.clear();
+    this.selection = true;
   }
 
   save() {
