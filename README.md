@@ -4,7 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Avant tout
 
-Se positionner dans le dossier du projet et lancer la commande `npm install`.
+Se positionner dans le dossier du projet et lancer la commande `npm install` puis la commande `npm install -g @angular/cli`.
 
 ## Development server
 
