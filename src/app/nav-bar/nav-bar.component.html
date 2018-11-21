@@ -1,3 +1,4 @@
+<!-- J'ai choisi de mettre une nav-bar pour ajouter des boutons pour l'utilisateur -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="#">Image Médicale</a>
   <div class="collapse navbar-collapse" id="navbarNavDropdown">
@@ -6,14 +7,14 @@
         <a class="nav-link" href="#" (click)='setSelectionOk()'>Importer</a>
       </li>
       <li class="nav-item active">
-        <a target="_blank" class="nav-link" href="#" (click)='save()'>Exporter</a>
+        <a class="nav-link" href="#" (click)='upload()'>Exporter</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Editer
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenu3">
-          <a class="dropdown-item" href="#" (click)='setSelection()'>Selectionner une zone</a>
+          <a class="dropdown-item" href="#" (click)='setEdition()'>Selectionner une zone</a>
           <a class="dropdown-item" href="#">Edition automatique</a>
         </div>
       </li>
@@ -24,11 +25,15 @@
   </div>
 </nav> 
 
+<!-- Affichage de la liste des images connues de la base de données Firebase si l'utilisateur veut sélectionner une image -->
 <div *ngIf="selection">
-  <form>
-    Lien vers l'image : <input type="text" #input>
-    <input type="submit" value="Valider" (click)='setPath(input.value)'>
-  </form>
+  <a *ngFor="let image of images | async as list">
+    <div>
+      <!-- Si l'utilisateur clique sur l'ID d'une image, elle sera chargée pour que l'utilisateur puisse l'éditer -->
+      <a href="#" (click)="setPath(image.URL)">{{image.ID}}</a>
+    </div>
+  </a>
 </div>
 
+<!-- Le composant canvas qui va contenir mon image -->
 <app-canvas></app-canvas>
