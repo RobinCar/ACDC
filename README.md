@@ -2,6 +2,10 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.4.
 
+## Avant tout
+
+Se positionner dans le dossier du projet et lancer la commande `npm install`.
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
@@ -27,9 +31,20 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
 
+## Importer des images
 
+A l'ouverture de l'application, une liste d'images est proposée. Ce sont les images disponibles sur Firebase.
+On peut retourner à cette liste à tout moment lors de l'utilisation en cliquant sur "Importer".
 
-!!!!
-Installer node
-run npm install -g @angular/cli
-puis npm install --save-dev @angular-devkit/build-angular
+## Editer
+
+Afin de sélecitonner la zone à cacher, il faut cliquer sur "Editer" puis sur "Selectionner une zone".
+Il est possible de cacher deux zones en refaisant la manipulaiton.
+
+## Restaurer
+
+Ce bouton permet de revenir à l'image chargée à l'origine.
+
+## Exporter
+
+Après avoir fait les modifications, l'utilisateur peut appuyer sur "Exporter" pour envoyer l'image vers Firebase.
